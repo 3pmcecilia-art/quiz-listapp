@@ -39,7 +39,10 @@ export default function App() {
         setProblems(p)
       } catch (err) {
         console.error(err)
-        setDbError('데이터를 불러오지 못했어요. Supabase 연결을 확인해주세요.')
+        setDbError({
+          message: '데이터를 불러오지 못했어요. Supabase 연결을 확인해주세요.',
+          detail:  err?.message || String(err),
+        })
       } finally {
         setLoading(false)
       }
@@ -147,7 +150,14 @@ export default function App() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
         <div className="text-center">
           <span className="text-4xl">⚠️</span>
-          <p className="mt-3 text-slate-600 font-medium">{dbError}</p>
+          <p className="mt-3 text-slate-600 font-medium">{dbError.message}</p>
+          <p className="mt-2 text-xs text-slate-400 break-all">{dbError.detail}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 text-sm px-4 py-2 rounded-lg bg-primary-500 text-white"
+          >
+            다시 시도
+          </button>
         </div>
       </div>
     )
